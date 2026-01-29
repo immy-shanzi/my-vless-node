@@ -32,7 +32,7 @@ jobs:
         run: |
           npx edgetunnel deploy \
             --mode http \
-            --worker-name " $ CF_WORKER_NAME" \
+            --worker-name " $CF_WORKER_NAME" \
             --uuid " $ UUID" \
             --api-token " $ CF_API_TOKEN" \
             --account-id " $ CF_ACCOUNT_ID" \
