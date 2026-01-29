@@ -1,0 +1,33 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install edgetunnel
+        run: npm install -g edgetunnel
+
+      - name: Deploy to Cloudflare Workers
+        env:
+          CF_API_TOKEN:  $ {{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID:  $ {{ secrets.CF_ACCOUNT_ID }}
+          CF_WORKER_NAME: my-vless-node
+          UUID: d342d11e-d424-4583-b36e-524ab1f0afa4
+        run: |
+          npx edgetunnel deploy --mode http \
+            --worker-name  $ CF_WORKER_NAME \my-vless-node
+            --uuid  $ UUID \d342d11e-d424-4583-b36e-524ab1f0afa4
+            --api-token  $ CF_API_TOKEN \
+            --account-id  $ CF_ACCOUNT_ID
