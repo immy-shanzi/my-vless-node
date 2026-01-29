@@ -3,6 +3,10 @@ name: Deploy to Cloudflare Workers
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:  # 允许手动触发部署
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
@@ -16,19 +20,20 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install edgetunnel
-        run: npm install -g edgetunnel
+      - name: Install latest edgetunnel
+        run: npm install -g edgetunnel@latest
 
-      - name: Deploy to Cloudflare Workers
+      - name: Deploy Worker (HTTP mode, no env)
         env:
           CF_API_TOKEN:  $ {{ secrets.CF_API_TOKEN }}
           CF_ACCOUNT_ID:  $ {{ secrets.CF_ACCOUNT_ID }}
           CF_WORKER_NAME: my-vless-node
-          UUID: e98f0acb-a4aa-4e36-a0d8-439b3a8671e3
+          UUID: e98f0acb-a4aa-4e36-a0d8-439b3a8671e3  # ← 你可以换成自己的 UUID
         run: |
-          npx edgetunnel deploy --mode http \
-            --worker-name  $ CF_WORKER_NAME \my-vless-node
-            --uuid  $ UUID \d342d11e-d424-4583-b36e-524ab1f0afa4
-            --api-token  $ CF_API_TOKEN \
-            --account-id  $ CF_ACCOUNT_ID
+          npx edgetunnel deploy \
+            --mode http \
+            --worker-name " $ CF_WORKER_NAME" \
+            --uuid " $ UUID" \
+            --api-token " $ CF_API_TOKEN" \
+            --account-id " $ CF_ACCOUNT_ID" \
             --no-env
