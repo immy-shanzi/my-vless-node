@@ -24,7 +24,7 @@ jobs:
           CF_API_TOKEN:  $ {{ secrets.CF_API_TOKEN }}
           CF_ACCOUNT_ID:  $ {{ secrets.CF_ACCOUNT_ID }}
           CF_WORKER_NAME: my-vless-node
-          UUID: d342d11e-d424-4583-b36e-524ab1f0afa4
+          UUID: e98f0acb-a4aa-4e36-a0d8-439b3a8671e3
         run: |
           npx edgetunnel deploy --mode http \
             --worker-name  $ CF_WORKER_NAME \my-vless-node
